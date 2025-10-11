@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K8s Practice Environment | UAT UAT UAT UAT</title>
+    <style>
+        /* Global Styles & Color Palette */
+        :root {
+            --color-k8s-blue: #326CE5;
+            --color-red-alert: #FF4136;
+            --color-green-prod: #2ECC40;
+            --color-dark-bg: #111111;
+            --color-light-text: #F0F0F0;
+            --color-accent-grad-start: #69F0AE; /* Vibrant Green */
+            --color-accent-grad-end: #00B0FF; /* Bright Cyan */
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            /* Unique Colorful Gradient Background */
+            background: linear-gradient(135deg, var(--color-dark-bg) 0%, var(--color-k8s-blue) 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--color-light-text);
+            overflow: hidden; /* Hide potential overflow from glitch effect */
+        }
+
+        .container {
+            background: rgba(0, 0, 0, 0.6); /* Semi-transparent overlay */
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px var(--color-accent-grad-start);
+            max-width: 800px;
+            text-align: center;
+            backdrop-filter: blur(5px); /* Unique Glassmorphism effect */
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: fadeIn 1s ease-out;
+        }
+
+        /* Glitch Effect for 'PRODUCTION' Title */
+        .glitch-text {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: var(--color-red-alert);
+            position: relative;
+            text-shadow: 0 0 5px var(--color-red-alert);
+            margin: 20px 0;
+            letter-spacing: 2px;
+            
+            /* Apply the gradient to the text fill */
+            background: -webkit-linear-gradient(45deg, var(--color-accent-grad-start), var(--color-accent-grad-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .glitch-text::before,
+        .glitch-text::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .glitch-text::before {
+            left: 2px;
+            text-shadow: -2px 0 var(--color-k8s-blue);
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim-1 2s infinite linear alternate-reverse;
+        }
+
+        .glitch-text::after {
+            left: -2px;
+            text-shadow: -2px 0 var(--color-red-alert);
+            clip: rect(65px, 450px, 85px, 0);
+            animation: glitch-anim-2 3s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-anim-1 {
+            0% { clip: rect(42px, 9999px, 52px, 0); transform: skew(0.5deg); }
+            5% { clip: rect(38px, 9999px, 46px, 0); transform: skew(-1deg); }
+            10% { clip: rect(72px, 9999px, 84px, 0); transform: skew(0.2deg); }
+            /* ... more steps for a complex glitch ... */
+            100% { clip: rect(22px, 9999px, 34px, 0); transform: skew(0.8deg); }
+        }
+
+        @keyframes glitch-anim-2 {
+            0% { clip: rect(100px, 9999px, 110px, 0); transform: skew(-0.8deg); }
+            10% { clip: rect(12px, 9999px, 22px, 0); transform: skew(0.5deg); }
+            20% { clip: rect(90px, 9999px, 100px, 0); transform: skew(-0.2deg); }
+            /* ... more steps for a complex glitch ... */
+            100% { clip: rect(40px, 9999px, 50px, 0); transform: skew(0.1deg); }
+        }
+
+        /* General element styles */
+        h1 {
+            color: var(--color-k8s-blue);
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            border-bottom: 2px solid var(--color-k8s-blue);
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            background: var(--color-green-prod);
+            color: var(--color-dark-bg);
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-top: 15px;
+            box-shadow: 0 0 15px var(--color-green-prod);
+        }
+        
+        /* Kubernetes Pod/Box Style */
+        .pod-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .pod-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid var(--color-accent-grad-end);
+            text-align: left;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .pod-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), 0 0 10px var(--color-accent-grad-end);
+        }
+
+        .pod-item h3 {
+            margin-top: 0;
+            color: var(--color-accent-grad-start);
+        }
+
+        .pod-item p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Keyframe for initial load */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        /* Media Query for smaller screens */
+        @media (max-width: 600px) {
+            .glitch-text {
+                font-size: 2.5rem;
+            }
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Kubernetes Practice Environment</h1>
+        
+        <div class="glitch-text" data-text="!!! THIS IS PRODUCTION !!!">
+            !!! THIS IS PRODUCTION !!!
+        </div>
+        
+        <p>You are logged into a **live, clustered environment** managed by Kubernetes. Exercise caution and follow all change control procedures.</p>
+        
+        <span class="status-badge">Cluster Status: Operational</span>
+
+        ---
+        
+        <h2>Active Deployments</h2>
+        <div class="pod-grid">
+            
+            <div class="pod-item">
+                <h3>Front-End Service</h3>
+                <p><strong>Deployment:</strong> web-ui-v2<br><strong>Replicas:</strong> 3<br><strong>Namespace:</strong> default</p>
+            </div>
+            
+            <div class="pod-item">
+                <h3>API Gateway</h3>
+                <p><strong>Deployment:</strong> api-v1-prod<br><strong>Replicas:</strong> 5<br><strong>Namespace:</strong> prod-system</p>
+            </div>
+
+            <div class="pod-item">
+                <h3>Database Proxy</h3>
+                <p><strong>StatefulSet:</strong> db-proxy<br><strong>Replicas:</strong> 2<br><strong>Namespace:</strong> storage</p>
+            </div>
+            
+            <div class="pod-item">
+                <h3>Logging Agent</h3>
+                <p><strong>DaemonSet:</strong> fluentd-daemon<br><strong>Nodes:</strong> All<br><strong>Namespace:</strong> kube-system</p>
+            </div>
+            
+        </div>
+        
+        <p style="margin-top: 40px; font-size: 0.8rem; opacity: 0.6;">All resources are actively monitored. Changes must be documented.</p>
+
+    </div>
+
+</body>
+</html>
