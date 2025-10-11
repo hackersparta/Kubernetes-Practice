@@ -1,317 +1,255 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-	<head>
-		  <meta charset="utf-8" />
-		    <meta name="viewport" content="width=device-width, initial-scale=1" />
-		      <title>Welcome to Kubernetes — A Colorful Playground</title>
-		        <style>
-    :root{
-	          --bg1:#0f1b2a;
-		        --bg2:#1b4d8a;
-			      --bg3:#1ec1b6;
-			            --fg:#eaf6ff;
-				          --card: rgba(255,255,255,0.08);
-					        --cardBorder: rgba(255,255,255,0.25);
-						      --grad1:#4f8cff;
-						            --grad2:#00e6d6;
-							          --grad3:#9b5cff;
-								      }
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kubernetes — REAL PRODUCTION ENVIRONMENT</title>
+  <style>
+    html,body { height:100%; margin:0; font-family:Inter,system-ui,Segoe UI,Roboto,Arial; background:#05060a; color:#e6eef8; }
+    #container{ width:100%; height:100vh; overflow:hidden; position:relative; }
 
-        * { box-sizing: border-box; }
+    /* HUD */
+    .hud{
+      position:absolute; left:20px; top:20px; z-index:10; backdrop-filter: blur(6px) saturate(1.1);
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border-radius:12px; padding:12px 16px; box-shadow:0 6px 30px rgba(0,0,0,0.6);
+      border:1px solid rgba(255,255,255,0.04);
+    }
+    .hud h1{ margin:0; font-size:14px; letter-spacing:0.12em; color:#9fe3ff }
+    .hud p{ margin:6px 0 0 0; font-size:12px; opacity:0.9 }
 
-	    html, body {
-		          height: 100%;
-			        margin: 0;
-				    }
+    /* Warning ribbon */
+    .ribbon{
+      position:absolute; right:20px; top:20px; z-index:11; transform:skewX(-12deg);
+      background: linear-gradient(90deg,#ff6b6b,#ffb26b); color:#111; font-weight:700;
+      padding:10px 22px; border-radius:6px; box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+      font-family:monospace; letter-spacing:0.06em;
+    }
 
-	        body {
-			      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-			            color: var(--fg);
-				          background: radial-gradient(circle at 20% -10%, rgba(79,140,255,0.25), transparent 40%),
-					                    radial-gradient(circle at 100% 0%, rgba(0,230,214,0.25), transparent 40%),
-							                      linear-gradient(135deg, var(--bg1) 0%, #0a1e2b 60%, #061223 100%);
-									            min-height: 100vh;
-										          display: flex;
-											        align-items: center;
-												      justify-content: center;
-												            overflow: hidden;
-													        }
+    /* Big center overlay text */
+    .tagline{
+      position:absolute; left:50%; top:82%; transform:translateX(-50%); z-index:12;
+      text-align:center; pointer-events:none; mix-blend-mode:screen;
+    }
+    .tagline .big{
+      font-size:34px; font-weight:800; text-transform:uppercase; letter-spacing:0.16em;
+      -webkit-text-stroke: 1px rgba(0,0,0,0.25);
+      text-shadow: 0 6px 30px rgba(0,0,0,0.6);
+      color:transparent; background:linear-gradient(90deg,#9fe3ff,#7effc7,#ffd97e);
+      -webkit-background-clip:text; background-clip:text;
+      filter:drop-shadow(0 6px 18px rgba(0,0,0,0.45));
+    }
+    .tagline .small{ margin-top:8px; font-size:13px; opacity:0.9; color:#dfeefe }
 
-		    .stage {
-			          width: min(1100px, 92vw);
-				        padding: 28px;
-					      border-radius: 28px;
-					            background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
-						          border: 1px solid rgba(255,255,255,0.25);
-							        backdrop-filter: blur(6px);
-								      position: relative;
-								            overflow: hidden;
-									          box-shadow: 0 20px 60px rgba(0,0,0,0.4);
-										      }
+    /* Footer */
+    .footer{ position:absolute; left:20px; bottom:18px; color:#9fbcd7; font-size:12px; opacity:0.9 }
 
-		        /* subtle decorative blobs */
-		        .blob {
-				      position: absolute;
-				            border-radius: 50%;
-					          filter: blur(40px);
-						        opacity: 0.6;
-							      animation: drift 20s infinite alternate;
-							            pointer-events: none;
-								        }
-			    .blob.b1 { width: 260px; height: 260px; background: #4f8cff; left: -60px; top: -60px; }
-			        .blob.b2 { width: 340px; height: 340px; background: #1ec1b6; right: -120px; bottom: -120px; animation-duration: 28s; }
+    /* Mobile tweaks */
+    @media (max-width:700px){ .tagline .big{ font-size:22px } .hud{ display:none } }
 
-				    @keyframes drift {
-					          0% { transform: translate(0,0); }
-						        100% { transform: translate(40px, -40px); }
-							    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <div class="hud">
+      <h1>KUBERNETES</h1>
+      <p>Cluster: prod-cluster-01 · Nodes: 5 · Pods: 247</p>
+    </div>
+    <div class="ribbon">⚠️ THIS IS REAL PRODUCTION ENVIRONMENT</div>
 
-				        .header {
-						      display: flex;
-						            align-items: center;
-							          justify-content: space-between;
-								        gap: 16px;
-									      padding: 8px 6px;
-									          }
+    <div class="tagline">
+      <div class="big">THIS IS REAL PRODUCTION ENVIRONMENT</div>
+      <div class="small">Handle with care — live traffic running</div>
+    </div>
 
-					    .logo {
-						          display: inline-flex;
-							        align-items: center;
-								      gap: 14px;
-								          }
+    <div class="footer">Interactive 3D demo — drag to orbit, scroll to zoom</div>
+  </div>
 
-					        h1 {
-							      font-size: clamp(1.8rem, 2.5vw + 1rem, 3rem);
-							            margin: 8px 0 6px;
-								          line-height: 1.1;
-									        letter-spacing: .5px;
-										      background: linear-gradient(90deg, #6be3ff 0%, #8e7dff 40%, #4affc6 100%);
-										            -webkit-background-clip: text;
-											          background-clip: text;
-												        color: transparent;
-													    }
+  <!-- three.js + OrbitControls from CDN -->
+  <script src="https://unpkg.com/three@0.153.0/build/three.min.js"></script>
+  <script src="https://unpkg.com/three@0.153.0/examples/js/controls/OrbitControls.js"></script>
 
-						    .subtitle {
-							          font-size: 1.05rem;
-								        color: #e7f6ff;
-									      opacity: .95;
-									            margin-bottom: 14px;
-										        }
+  <script>
+    // Basic scene setup
+    const container = document.getElementById('container');
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x05060a, 0.035);
 
-						        .k8s-svg {
-								      width: 140px;
-								            height: 140px;
-									          display: block;
-										        margin: 6px auto 0;
-											      filter: drop-shadow(0 6px 20px rgba(0,0,0,.4));
-											          }
+    const renderer = new THREE.WebGLRenderer({ antialias:true, alpha:true });
+    renderer.setPixelRatio(window.devicePixelRatio || 1);
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.outputEncoding = THREE.sRGBEncoding;
+    container.appendChild(renderer.domElement);
 
-							    .hero {
-								          text-align: center;
-									        padding: 14px;
-										    }
+    const camera = new THREE.PerspectiveCamera(45, container.clientWidth/container.clientHeight, 0.1, 1000);
+    camera.position.set(0, 12, 32);
 
-							        .grid {
-									      display: grid;
-									            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-										          gap: 16px;
-											        margin-top: 18px;
-												    }
+    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true; controls.dampingFactor = 0.07;
+    controls.minDistance = 8; controls.maxDistance = 80;
 
-								    .card {
-									          background: var(--card);
-										        border: 1px solid var(--cardBorder);
-											      border-radius: 16px;
-											            padding: 14px 14px 12px;
-												          text-align: left;
-													        transition: transform .2s ease, background .3s ease;
-														    }
-								        .card:hover { transform: translateY(-2px); background: rgba(255,255,255,.12); }
+    // lights
+    const hemi = new THREE.HemisphereLight(0x9fbddf, 0x0b1220, 0.7);
+    scene.add(hemi);
+    const dir = new THREE.DirectionalLight(0xffffff, 1.0);
+    dir.position.set(10,20,10);
+    scene.add(dir);
 
-									    .card h3 {
-										          margin: 0 0 6px 0;
-											        font-size: 1.05rem;
-												    }
-									        .card p {
-											      margin: 0;
-											            font-size: .95rem;
-												          color: #eaf6ff;
-													        opacity: .92;
-														    }
+    // Particle field (for ambient movement)
+    const particleCount = 800;
+    const particlesGeom = new THREE.BufferGeometry();
+    const pos = new Float32Array(particleCount * 3);
+    for(let i=0;i<particleCount;i++){
+      pos[i*3+0] = (Math.random()-0.5) * 120;
+      pos[i*3+1] = (Math.random()-0.5) * 40;
+      pos[i*3+2] = (Math.random()-0.5) * 120;
+    }
+    particlesGeom.setAttribute('position', new THREE.BufferAttribute(pos,3));
+    const particlesMat = new THREE.PointsMaterial({ size:0.45, transparent:true, opacity:0.8 });
+    const particleSystem = new THREE.Points(particlesGeom, particlesMat);
+    scene.add(particleSystem);
 
-										    .cta {
-											          display: inline-block;
-												        margin-top: 14px;
-													      padding: 12px 18px;
-													            border-radius: 999px;
-														          border: 0;
-															        cursor: pointer;
-																      font-weight: 600;
-																            color: #06223b;
-																	          background: linear-gradient(135deg, #6be3ff 0%, #4f8cff 60%, #6af9a8 100%);
-																		        box-shadow: 0 6px 18px rgba(107, 227, 255, 0.6);
-																			    }
-										        .cta:hover { transform: translateY(-1px); }
+    // Create a stylized "k8s wheel" using extruded hexagon spokes
+    // Base hexagon shape
+    function createK8sWheel(){
+      const group = new THREE.Group();
 
-											    /* small floating hint at bottom-right to hint interactivity */
-											    .hint {
-												          position: fixed;
-													        right: 18px;
-														      bottom: 18px;
-														            background: rgba(0,0,0,.35);
-															          color: #eafffb;
-																        padding: 8px 12px;
-																	      border-radius: 999px;
-																	            font-size: .85rem;
-																		          border: 1px solid rgba(255,255,255,.25);
-																			        display: inline-flex;
-																				      align-items: center;
-																				            gap: 8px;
-																					          user-select: none;
-																						      }
+      // central core
+      const coreGeo = new THREE.CylinderGeometry(2.6,2.6,1.2,32);
+      const coreMat = new THREE.MeshPhysicalMaterial({ metalness:0.9, roughness:0.25, clearcoat:0.8, color:0x073b4c, emissive:0x073b4c, emissiveIntensity:0.1 });
+      const core = new THREE.Mesh(coreGeo, coreMat);
+      core.rotation.x = Math.PI/2;
+      group.add(core);
 
-											        /* modal */
-											        .modal {
-													      position: fixed;
-													            top: 0; left: 0;
-														          width: 100%; height: 100%;
-															        background: rgba(0,0,0,0.65);
-																      display: none;
-																            align-items: center;
-																	          justify-content: center;
-																		        padding: 20px;
-																			      z-index: 999;
-																			          }
-												    .modal.active { display: flex; }
+      // create 6 spokes (like a wheel) — hexagonal theme
+      const spokeGeom = new THREE.BoxGeometry(0.9, 7.5, 0.7);
+      const spokeMat = new THREE.MeshStandardMaterial({ color:0x3bd9ff, metalness:0.6, roughness:0.2 });
 
-												        .dialog {
-														      width: min(700px, 92vw);
-														            max-height: 80vh;
-															          overflow: auto;
-																        background: #0a1a2a;
-																	      border: 1px solid rgba(255,255,255,.25);
-																	            border-radius: 16px;
-																		          padding: 18px 20px;
-																			        color: #eaf6ff;
-																				      box-shadow: 0 20px 60px rgba(0,0,0,.6);
-																				          }
+      for(let i=0;i<6;i++){
+        const s = new THREE.Mesh(spokeGeom, spokeMat);
+        s.position.y = 3.8;
+        s.rotation.z = (Math.PI/6) + i * (Math.PI/3);
+        s.position.x = Math.cos(i * (Math.PI/3)) * 0.6;
+        s.position.z = Math.sin(i * (Math.PI/3)) * 0.6;
+        group.add(s);
+      }
 
-													    .dialog h2 { margin-top: 0; }
-													        .step {
-															      display: grid;
-															            grid-template-columns: 24px 1fr;
-																          gap: 8px;
-																	        align-items: start;
-																		      margin: 10px 0;
-																		          }
-														    .step .num {
-															          width: 24px; height: 24px;
-																        border-radius: 8px;
-																	      display: inline-flex; align-items: center; justify-content: center;
-																	            font-weight: 700;
-																		          background: linear-gradient(135deg, var(--grad1), var(--grad2));
-																			        color: white;
-																				      box-shadow: 0 2px 6px rgba(0,0,0,.5);
-																				          }
-														        .step p { margin: 0; }
+      // outer ring
+      const ringGeo = new THREE.TorusGeometry(9.0, 0.9, 30, 120);
+      const ringMat = new THREE.MeshPhysicalMaterial({ color:0x084a63, metalness:0.9, roughness:0.2, clearcoat:0.6 });
+      const ring = new THREE.Mesh(ringGeo, ringMat);
+      ring.rotation.x = Math.PI/2;
+      group.add(ring);
 
-															    .close {
-																          background: transparent; border: 0; color: #fff;
-																	        float: right; font-size: 1.1rem; cursor: pointer;
-																		      padding: 4px 8px;
-																		          }
+      // add glowing rim using shader-like sprite (billboard)
+      const spriteMat = new THREE.SpriteMaterial({
+        map: makeGlowTexture(),
+        blending: THREE.AdditiveBlending, opacity:0.35, depthWrite:false
+      });
+      const glow = new THREE.Sprite(spriteMat);
+      glow.scale.set(30,30,1);
+      group.add(glow);
 
-															        @media (max-width: 640px){
-																	      .logo { justify-content: center; }
-																	            .header { flex-direction: column; align-items: center; text-align: center; }
-																		          .step { grid-template-columns: 1fr; }
-																			        .step .num { margin: 0 auto; }
-																				    }
-																  </style>
-	</head>
-	<body>
-		  <div class="stage" aria-label="Kubernetes welcome stage">
-			      <div class="blob b1" aria-hidden="true"></div>
-			          <div class="blob b2" aria-hidden="true"></div>
+      return group;
+    }
 
-				      <div class="header">
-					            <div class="logo" role="img" aria-label="Kubernetes logo and title">
-							            <!-- Inline Kubernetes-like logo (stylized wheel) -->
-								            <svg class="k8s-svg" viewBox="0 0 200 200" aria-label="Kubernetes wheel logo" role="img">
-										              <defs>
-											                  <linearGradient id="grad" x1="0" x2="1" y1="0" y2="1">
-													                <stop offset="0%" stop-color="#4f8cff"/>
-															              <stop offset="60%" stop-color="#00e6d6"/>
-																                    <stop offset="100%" stop-color="#6affc7"/>
-																		                </linearGradient>
-																				          </defs>
-																					            <!-- outer ring -->
-																						              <circle cx="100" cy="100" r="78" fill="none" stroke="url(#grad)" stroke-width="14" />
-																							                <!-- spokes (8) -->
-																									          <line x1="100" y1="100" x2="100" y2="60" stroke="url(#grad)" stroke-width="10" stroke-linecap="round" transform="rotate(0 100 100)"/>
-																										            <line x1="100" y1="100" x2="100" y2="60" stroke="url(#grad)" stroke-width="10" stroke-linecap="round" transform="rotate(45 100 100)"/>
-																											              <line x1="100" y1="100" x2="100" y2="60" stroke="url(#grad)" stroke-width="10" stroke-linecap="round" transform="rotate(90 100 100)"/>
-																												                <line x1="100" y1="100" x2="100" y2="60" stroke="url(#grad)" stroke-width="10" stroke-linecap="round" transform="rotate(135 100 100)"/>
-																														          <line x1="100" y1="100" x2="100" y2="60" stroke="url(#grad)" stroke-width="10" stroke-linecap="round" transform="rotate(180 100 100)"/>
-																															            <line x1="100" y1="100" x2="100" y2="60" stroke="url(#grad)" stroke-width="10" stroke-linecap="round" transform="rotate(225 100 100)"/>
-																																              <line x1="100" y1="100" x2="100" y2="60" stroke="url(#grad)" stroke-width="10" stroke-linecap="round" transform="rotate(270 100 100)"/>
-																																	                <line x1="100" y1="100" x2="100" y2="60" stroke="url(#grad)" stroke-width="10" stroke-linecap="round" transform="rotate(315 100 100)"/>
-																																			          <!-- hub -->
-																																				            <circle cx="100" cy="100" r="16" fill="url(#grad)" />
-																																					            </svg>
-																																						          </div>
-																																							        <div style="text-align:left; max-width:560px;">
-																																									        <h1>Welcome to PRODUCTION Kubernetes</h1>
-																																										        <p class="subtitle">A colorful, interactive landing page to celebrate your local Kubernetes practice. No cloud required—just Docker and a playground mindset.</p>
-																																											      </div>
-																																											          </div>
+    function makeGlowTexture(){
+      const size = 512;
+      const canvas = document.createElement('canvas'); canvas.width=size; canvas.height=size;
+      const ctx = canvas.getContext('2d');
+      const grad = ctx.createRadialGradient(size/2, size/2, 0, size/2, size/2, size/2);
+      grad.addColorStop(0, 'rgba(150,255,255,0.95)');
+      grad.addColorStop(0.35, 'rgba(120,220,255,0.35)');
+      grad.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = grad; ctx.fillRect(0,0,size,size);
+      const tex = new THREE.CanvasTexture(canvas); return tex;
+    }
 
-																																												      <div class="hero" aria-label="Quick introduction">
-																																													            <p style="margin:0; font-size:1rem; color:#e9f7ff; opacity:.95;">This page showcases a unique way to greet beginners and remind veterans that Kubernetes runs everywhere: on your laptop, in your terminal, and in your imagination.</p>
-																																														          <button class="cta" id="startBtn" aria-label="Open setup guide">Start the Local Playground</button>
-																																															      </div>
+    const wheel = createK8sWheel();
+    wheel.position.set(0,0,0);
+    scene.add(wheel);
 
-																																															          <section class="grid" aria-label="Feature highlights">
-																																																	        <div class="card" style="border-left:6px solid #6be3ff;">
-																																																			        <h3>Local cluster, no cloud</h3>
-																																																				        <p>Practice with Kind or K3d on your Windows machine using Docker Desktop. Create multi-node simulations and learn scheduling fundamentals.</p>
-																																																					      </div>
-																																																					            <div class="card" style="border-left:6px solid #4f8cff;">
-																																																							            <h3>4 pods per node (demo)</h3>
-																																																								            <p>Pin workloads to specific nodes with nodeAffinity to observe distribution and scheduling behavior.</p>
-																																																									          </div>
-																																																										        <div class="card" style="border-left:6px solid #9b5cff;">
-																																																												        <h3>Interactive guidance</h3>
-																																																													        <p>Click the button to reveal a guided, step-by-step local setup and verification commands you can copy/paste.</p>
-																																																														      </div>
-																																																														          </section>
+    // Floating labels: show "PROD" badge in 3D
+    const createBadge = (text)=>{
+      const canvas = document.createElement('canvas'); canvas.width=512; canvas.height=256;
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = 'rgba(8,12,18,0.0)'; ctx.fillRect(0,0,canvas.width,canvas.height);
+      ctx.font = 'bold 96px monospace'; ctx.textAlign='center'; ctx.fillStyle = '#ffb26b';
+      ctx.fillText(text, canvas.width/2, canvas.height/2 + 30);
+      const tex = new THREE.CanvasTexture(canvas);
+      const mat = new THREE.SpriteMaterial({ map:tex, transparent:true });
+      const spr = new THREE.Sprite(mat); spr.scale.set(6,3,1);
+      return spr;
+    }
+    const prodBadge = createBadge('PROD'); prodBadge.position.set(0,7.6,0); scene.add(prodBadge);
 
-																																																															    </div>
+    // subtle ground
+    const groundGeo = new THREE.CircleGeometry(55, 64);
+    const groundMat = new THREE.MeshStandardMaterial({ color:0x04141a, roughness:1, metalness:0 });
+    const ground = new THREE.Mesh(groundGeo, groundMat); ground.rotation.x = -Math.PI/2; ground.position.y = -6.2; scene.add(ground);
 
-																																																															      <div class="hint" role="note" aria-label="Hint">
-																																																																          Tip: Try removing the control-plane taint to run workloads on the master node (if you’re experimenting with 3-node workloads).
-																																																																	    </div>
+    // cluster nodes — little spheres orbiting the wheel
+    const nodesGroup = new THREE.Group();
+    for(let i=0;i<8;i++){
+      const nGeo = new THREE.SphereGeometry(0.65,16,16);
+      const nMat = new THREE.MeshStandardMaterial({ color:0x7effc7, emissive:0x1c6f5f, metalness:0.6, roughness:0.3 });
+      const node = new THREE.Mesh(nGeo,nMat);
+      const angle = i*(Math.PI*2/8);
+      node.userData = {angle, radius: 15 + (i%2?2:-2), speed:0.002 + Math.random()*0.004 };
+      node.position.set(Math.cos(angle)*node.userData.radius, (Math.random()-0.5)*2.8, Math.sin(angle)*node.userData.radius);
+      nodesGroup.add(node);
+    }
+    scene.add(nodesGroup);
 
-																																																																	      <!-- Modal for steps -->
-																																																																	        <div class="modal" id="modal" aria-hidden="true" aria-label="Setup steps modal">
-																																																																			    <div class="dialog" role="dialog" aria-label="Setup steps">
-																																																																				          <button class="close" id="closeBtn" aria-label="Close">✕</button>
-																																																																					        <h2>Local Kubernetes Playground — Quick Start</h2>
-																																																																						      <p style="margin-top:0; color:#d9f0ff;">
-																																																																						              Use Kind (Kubernetes IN Docker) to create a 3-node cluster on your Windows machine. Then deploy 3 small apps (4 pods per node) using nodeAffinity.
-																																																																							            </p>
+    // responsive
+    window.addEventListener('resize', ()=>{
+      camera.aspect = container.clientWidth/container.clientHeight; camera.updateProjectionMatrix();
+      renderer.setSize(container.clientWidth, container.clientHeight);
+    });
 
-																																																																								          <div class="step">
-																																																																										          <div class="num">1</div>
-																																																																											          <div>
-																																																																													            <strong>Install Kind (Windows)</strong>
-																																																																														              <p>Download kind.exe and place it on your PATH. Example: C:\tools\kind.exe</p>
-																																																																															              </div>
-																																																																																            </div>
+    // animation loop
+    let t=0;
+    function animate(){
+      t += 0.01;
+      // particles gentle drift
+      particleSystem.rotation.y = t * 0.03;
 
-																																																																																	          <div class="step">
-																																																																																			          <div class="num">2</div>
-																																																																																				          <div>
-																																																																																						            <strong>Cluster config</strong>
-																																																																																							         
+      // wheel slow spin
+      wheel.rotation.y += 0.0025;
+      wheel.rotation.x = Math.sin(t*0.1) * 0.04;
 
+      // nodes orbit
+      nodesGroup.children.forEach(n=>{
+        n.userData.angle += n.userData.speed;
+        n.position.x = Math.cos(n.userData.angle) * n.userData.radius;
+        n.position.z = Math.sin(n.userData.angle) * n.userData.radius;
+        n.position.y = Math.sin(t*0.6 + n.userData.angle*2) * 1.8;
+      });
+
+      // breathing badge
+      prodBadge.scale.x = prodBadge.scale.y = 5 + Math.sin(t*1.6)*0.12;
+
+      controls.update();
+      renderer.render(scene, camera);
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    // tiny easter-keys to flash ribbon
+    window.addEventListener('keydown', (e)=>{
+      if(e.key === '!' || e.key === '1'){
+        const ribbon = document.querySelector('.ribbon');
+        ribbon.style.transition = 'transform 0.25s ease, box-shadow 0.25s ease';
+        ribbon.style.transform = 'skewX(-12deg) scale(1.04)';
+        setTimeout(()=> ribbon.style.transform = 'skewX(-12deg) scale(1)', 250);
+      }
+    });
+
+    // friendly hint if WebGL not available
+    if(!renderer.capabilities || !renderer.context){
+      const d = document.createElement('div'); d.style.padding='20px'; d.style.color='white'; d.innerHTML='Your browser does not support WebGL — try a modern browser like Chrome or Firefox.';
+      container.appendChild(d);
+    }
+  </script>
+</body>
+</html>
