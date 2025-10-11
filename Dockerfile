@@ -12,7 +12,7 @@ RUN apk update && \
 # 2. Copy the index.html file from your local directory 
 #    to the default document root of httpd (/var/www).
 #    The path is relative to the directory where you run 'docker build'.
-COPY index.html /var/www/index.html
+COPY index.html /var/www/localhost/htdocs/index.html
 
 # 3. Expose the default port for HTTP traffic (Port 80)
 EXPOSE 80
