@@ -1,0 +1,71 @@
+# To Deploy
+# kubectl apply -f combined-deployment.yaml
+# kubectl get pods -o wide
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apache-uat
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: apache-uat
+  template:
+    metadata:
+      labels:
+        app: apache-uat
+    spec:
+      nodeSelector:
+        role: uat
+      containers:
+      - name: apache
+        image: nirmal46789/alpine-kubepractice-app:uat
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apache-qatest
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: apache-qatest
+  template:
+    metadata:
+      labels:
+        app: apache-qatest
+    spec:
+      nodeSelector:
+        role: qatest
+      containers:
+      - name: apache
+        image: nirmal46789/alpine-kubepractice-app:qatest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apache-production
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: apache-production
+  template:
+    metadata:
+      labels:
+        app: apache-production
+    spec:
+      nodeSelector:
+        role: production
+      containers:
+      - name: apache
+        image: nirmal46789/alpine-kubepractice-app:prod
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80

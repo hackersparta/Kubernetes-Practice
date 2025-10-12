@@ -1,0 +1,89 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_REPO = 'nirmal46789/alpine-kubepractice-app'
+        GIT_URL = 'https://github.com/hackersparta/Kubernetes-Practice.git'
+        DOCKER_CREDS = 'nirmal46789' // Jenkins Docker Hub credentials ID
+    }
+
+    stages {
+
+        stage('Build & Push - PROD') {
+            steps {
+                script {
+                    cleanWs()
+                    //echo "Checking out PROD branch..."
+                    git branch: 'nirmal_kubernetes_practice_prod', url: "${GIT_URL}"
+
+                    //echo "Building Docker image for PROD..."
+                    def prodImage = docker.build("${DOCKER_REPO}:prod", '--no-cache .')
+
+                    //echo "Pushing PROD image..."
+                    docker.withRegistry('https://index.docker.io/v1/', "${DOCKER_CREDS}") {
+                        prodImage.push()
+                    }
+                }
+            }
+        }
+
+        stage('Build & Push - UAT') {
+            steps {
+                script {
+                    cleanWs()
+                    echo "Checking out UAT branch..."
+                    git branch: 'nirmal_kubernetes_practice_uat', url: "${GIT_URL}"
+
+                    echo "Building Docker image for UAT..."
+                    def uatImage = docker.build("${DOCKER_REPO}:uat", '--no-cache .')
+
+                    echo "Pushing UAT image..."
+                    docker.withRegistry('https://index.docker.io/v1/', "${DOCKER_CREDS}") {
+                        uatImage.push()
+                    }
+                }
+            }
+        }
+
+        stage('Build & Push - QATEST') {
+            steps {
+                script {
+                    cleanWs()
+                    echo "Checking out QATEST branch..."
+                    git branch: 'nirmal_kubernetes_practice_qatest', url: "${GIT_URL}"
+
+                    echo "Building Docker image for QATEST..."
+                    def qaImage = docker.build("${DOCKER_REPO}:qatest", '--no-cache .')
+
+                    echo "Pushing QATEST image..."
+                    docker.withRegistry('https://index.docker.io/v1/', "${DOCKER_CREDS}") {
+                        qaImage.push()
+                    }
+                }
+            }
+        }
+    
+        stage('Deploy to Kubernetes') {
+            steps {
+                script {
+                    echo "Applying Kubernetes manifests..."
+                    sh """
+                        kubectl --kubeconfig=/var/jenkins_home/.kube/config apply -f k8s/combined-deployments.yaml
+                        kubectl --kubeconfig=/var/jenkins_home/.kube/config apply -f k8s/combined-service.yaml
+                        sh k8s/port_forward_svc.sh
+                    """
+                }
+            }
+        }
+
+    }
+
+    post {
+        success {
+            echo "✅ All Docker images built and pushed successfully!"
+        }
+        failure {
+            echo "❌ Pipeline failed. Check logs!"
+        }
+    }
+}
