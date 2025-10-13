@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apache-production
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: apache-production
+  template:
+    metadata:
+      labels:
+        app: apache-production
+    spec:
+      nodeSelector:
+        role: production
+      containers:
+      - name: apache
+        image: nirmal46789/alpine-kubepractice-app:prod
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: apache-production-svc
+spec:
+  selector:
+    app: apache-production
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 30003
