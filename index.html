@@ -1,317 +1,198 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		  <meta charset="utf-8" />
-		    <meta name="viewport" content="width=device-width, initial-scale=1" />
-		      <title>Welcome to Kubernetes — A Colorful Playground</title>
-		        <style>
-    :root{
-	          --bg1:#0f1b2a;
-		        --bg2:#1b4d8a;
-			      --bg3:#1ec1b6;
-			            --fg:#eaf6ff;
-				          --card: rgba(255,255,255,0.08);
-					        --cardBorder: rgba(255,255,255,0.25);
-						      --grad1:#4f8cff;
-						            --grad2:#00e6d6;
-							          --grad3:#9b5cff;
-								      }
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kubernetes Playground — 3D Animation</title>
+<style>
+:root{
+  --bg1:#0f1b2a;
+  --bg2:#1b4d8a;
+  --bg3:#1ec1b6;
+  --fg:#eaf6ff;
+  --accent1:#6be3ff;
+  --accent2:#4f8cff;
+  --accent3:#9b5cff;
+}
 
-        * { box-sizing: border-box; }
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background: radial-gradient(circle at 30% 30%, rgba(79,140,255,0.25), transparent 40%),
+              radial-gradient(circle at 70% 70%, rgba(30,193,182,0.25), transparent 40%),
+              linear-gradient(135deg, var(--bg1), var(--bg2), var(--bg3));
+  font-family: 'Inter', sans-serif;
+  color: var(--fg);
+  overflow:hidden;
+}
 
-	    html, body {
-		          height: 100%;
-			        margin: 0;
-				    }
+.stage3d{
+  position:relative;
+  width:90vw;
+  max-width:1200px;
+  height:80vh;
+  perspective:1200px;
+}
 
-	        body {
-			      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-			            color: var(--fg);
-				          background: radial-gradient(circle at 20% -10%, rgba(79,140,255,0.25), transparent 40%),
-					                    radial-gradient(circle at 100% 0%, rgba(0,230,214,0.25), transparent 40%),
-							                      linear-gradient(135deg, var(--bg1) 0%, #0a1e2b 60%, #061223 100%);
-									            min-height: 100vh;
-										          display: flex;
-											        align-items: center;
-												      justify-content: center;
-												            overflow: hidden;
-													        }
+.cluster{
+  width:100%;
+  height:100%;
+  transform-style: preserve-3d;
+  animation: rotateCluster 60s linear infinite;
+  position: relative;
+}
 
-		    .stage {
-			          width: min(1100px, 92vw);
-				        padding: 28px;
-					      border-radius: 28px;
-					            background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
-						          border: 1px solid rgba(255,255,255,0.25);
-							        backdrop-filter: blur(6px);
-								      position: relative;
-								            overflow: hidden;
-									          box-shadow: 0 20px 60px rgba(0,0,0,0.4);
-										      }
+@keyframes rotateCluster{
+  0% {transform: rotateY(0deg) rotateX(10deg);}
+  100% {transform: rotateY(360deg) rotateX(10deg);}
+}
 
-		        /* subtle decorative blobs */
-		        .blob {
-				      position: absolute;
-				            border-radius: 50%;
-					          filter: blur(40px);
-						        opacity: 0.6;
-							      animation: drift 20s infinite alternate;
-							            pointer-events: none;
-								        }
-			    .blob.b1 { width: 260px; height: 260px; background: #4f8cff; left: -60px; top: -60px; }
-			        .blob.b2 { width: 340px; height: 340px; background: #1ec1b6; right: -120px; bottom: -120px; animation-duration: 28s; }
+.node{
+  width:120px;
+  height:120px;
+  background: rgba(255,255,255,0.08);
+  border: 2px solid var(--accent2);
+  border-radius:16px;
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform-style: preserve-3d;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  box-shadow: 0 0 30px rgba(79,140,255,0.5);
+  animation: floatNode 6s ease-in-out infinite alternate;
+}
 
-				    @keyframes drift {
-					          0% { transform: translate(0,0); }
-						        100% { transform: translate(40px, -40px); }
-							    }
+@keyframes floatNode{
+  0% {transform: translate3d(-50%,-50%,0) translateY(0px);}
+  100% {transform: translate3d(-50%,-50%,0) translateY(-20px);}
+}
 
-				        .header {
-						      display: flex;
-						            align-items: center;
-							          justify-content: space-between;
-								        gap: 16px;
-									      padding: 8px 6px;
-									          }
+.pod{
+  width:40px;
+  height:40px;
+  background: linear-gradient(135deg, var(--accent1), var(--accent3));
+  border-radius:50%;
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform-style: preserve-3d;
+  box-shadow:0 0 15px rgba(255,255,255,0.7);
+  animation: orbitPod 10s linear infinite;
+}
 
-					    .logo {
-						          display: inline-flex;
-							        align-items: center;
-								      gap: 14px;
-								          }
+@keyframes orbitPod{
+  0%{transform: rotateZ(0deg) translateX(60px) rotateZ(0deg);}
+  100%{transform: rotateZ(360deg) translateX(60px) rotateZ(-360deg);}
+}
 
-					        h1 {
-							      font-size: clamp(1.8rem, 2.5vw + 1rem, 3rem);
-							            margin: 8px 0 6px;
-								          line-height: 1.1;
-									        letter-spacing: .5px;
-										      background: linear-gradient(90deg, #6be3ff 0%, #8e7dff 40%, #4affc6 100%);
-										            -webkit-background-clip: text;
-											          background-clip: text;
-												        color: transparent;
-													    }
+/* 3D particles background */
+.particle{
+  position:absolute;
+  width:4px;
+  height:4px;
+  background:white;
+  border-radius:50%;
+  opacity:0.6;
+  animation: floatParticle 20s linear infinite;
+}
 
-						    .subtitle {
-							          font-size: 1.05rem;
-								        color: #e7f6ff;
-									      opacity: .95;
-									            margin-bottom: 14px;
-										        }
+@keyframes floatParticle{
+  0%{transform: translate3d(0,0,0);}
+  100%{transform: translate3d(200px,-200px,-500px);}
+}
 
-						        .k8s-svg {
-								      width: 140px;
-								            height: 140px;
-									          display: block;
-										        margin: 6px auto 0;
-											      filter: drop-shadow(0 6px 20px rgba(0,0,0,.4));
-											          }
+.header3d{
+  position:absolute;
+  top:20px;
+  left:50%;
+  transform:translateX(-50%);
+  text-align:center;
+  z-index:10;
+}
 
-							    .hero {
-								          text-align: center;
-									        padding: 14px;
-										    }
+.header3d h1{
+  font-size:3rem;
+  background: linear-gradient(90deg, var(--accent1), var(--accent2), var(--accent3));
+  -webkit-background-clip:text;
+  color:transparent;
+  margin-bottom:8px;
+}
 
-							        .grid {
-									      display: grid;
-									            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-										          gap: 16px;
-											        margin-top: 18px;
-												    }
+.header3d p{
+  font-size:1.2rem;
+  opacity:0.9;
+}
 
-								    .card {
-									          background: var(--card);
-										        border: 1px solid var(--cardBorder);
-											      border-radius: 16px;
-											            padding: 14px 14px 12px;
-												          text-align: left;
-													        transition: transform .2s ease, background .3s ease;
-														    }
-								        .card:hover { transform: translateY(-2px); background: rgba(255,255,255,.12); }
+/* Button */
+.cta3d{
+  position:absolute;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%);
+  background: linear-gradient(135deg,var(--accent1),var(--accent2),var(--accent3));
+  color:#06223b;
+  font-weight:600;
+  padding:12px 24px;
+  border:none;
+  border-radius:999px;
+  cursor:pointer;
+  box-shadow: 0 6px 18px rgba(107,227,255,0.6);
+  transition: transform 0.2s ease;
+}
 
-									    .card h3 {
-										          margin: 0 0 6px 0;
-											        font-size: 1.05rem;
-												    }
-									        .card p {
-											      margin: 0;
-											            font-size: .95rem;
-												          color: #eaf6ff;
-													        opacity: .92;
-														    }
+.cta3d:hover{transform:translateY(-2px);}
 
-										    .cta {
-											          display: inline-block;
-												        margin-top: 14px;
-													      padding: 12px 18px;
-													            border-radius: 999px;
-														          border: 0;
-															        cursor: pointer;
-																      font-weight: 600;
-																            color: #06223b;
-																	          background: linear-gradient(135deg, #6be3ff 0%, #4f8cff 60%, #6af9a8 100%);
-																		        box-shadow: 0 6px 18px rgba(107, 227, 255, 0.6);
-																			    }
-										        .cta:hover { transform: translateY(-1px); }
+/* Animate multiple pods orbiting nodes */
+.node:nth-child(1) .pod:nth-child(1){animation-delay:0s;}
+.node:nth-child(1) .pod:nth-child(2){animation-delay:2s;}
+.node:nth-child(1) .pod:nth-child(3){animation-delay:4s;}
+.node:nth-child(2) .pod:nth-child(1){animation-delay:1s;}
+.node:nth-child(2) .pod:nth-child(2){animation-delay:3s;}
+.node:nth-child(2) .pod:nth-child(3){animation-delay:5s;}
 
-											    /* small floating hint at bottom-right to hint interactivity */
-											    .hint {
-												          position: fixed;
-													        right: 18px;
-														      bottom: 18px;
-														            background: rgba(0,0,0,.35);
-															          color: #eafffb;
-																        padding: 8px 12px;
-																	      border-radius: 999px;
-																	            font-size: .85rem;
-																		          border: 1px solid rgba(255,255,255,.25);
-																			        display: inline-flex;
-																				      align-items: center;
-																				            gap: 8px;
-																					          user-select: none;
-																						      }
+</style>
+</head>
+<body>
+  <div class="stage3d">
+    <div class="header3d">
+      <h1>UAT Kubernetes 3D Playground</h1>
+      <p>Explore a floating cluster with nodes and pods—everything animated in your browser!</p>
+    </div>
 
-											        /* modal */
-											        .modal {
-													      position: fixed;
-													            top: 0; left: 0;
-														          width: 100%; height: 100%;
-															        background: rgba(0,0,0,0.65);
-																      display: none;
-																            align-items: center;
-																	          justify-content: center;
-																		        padding: 20px;
-																			      z-index: 999;
-																			          }
-												    .modal.active { display: flex; }
+    <div class="cluster">
+      <!-- Node 1 -->
+      <div class="node" style="transform: translate3d(-150px,-50px,50px);">
+        <div class="pod"></div>
+        <div class="pod"></div>
+        <div class="pod"></div>
+      </div>
+      <!-- Node 2 -->
+      <div class="node" style="transform: translate3d(120px,50px,-80px);">
+        <div class="pod"></div>
+        <div class="pod"></div>
+        <div class="pod"></div>
+      </div>
+      <!-- Node 3 -->
+      <div class="node" style="transform: translate3d(0px,120px,100px);">
+        <div class="pod"></div>
+        <div class="pod"></div>
+        <div class="pod"></div>
+      </div>
 
-												        .dialog {
-														      width: min(700px, 92vw);
-														            max-height: 80vh;
-															          overflow: auto;
-																        background: #0a1a2a;
-																	      border: 1px solid rgba(255,255,255,.25);
-																	            border-radius: 16px;
-																		          padding: 18px 20px;
-																			        color: #eaf6ff;
-																				      box-shadow: 0 20px 60px rgba(0,0,0,.6);
-																				          }
+      <!-- Random floating particles -->
+      <div class="particle" style="top:20px;left:40px;animation-duration:18s;"></div>
+      <div class="particle" style="top:80px;left:120px;animation-duration:22s;"></div>
+      <div class="particle" style="top:150px;left:200px;animation-duration:25s;"></div>
+      <div class="particle" style="top:200px;left:300px;animation-duration:20s;"></div>
+      <div class="particle" style="top:50px;left:250px;animation-duration:28s;"></div>
+    </div>
 
-													    .dialog h2 { margin-top: 0; }
-													        .step {
-															      display: grid;
-															            grid-template-columns: 24px 1fr;
-																          gap: 8px;
-																	        align-items: start;
-																		      margin: 10px 0;
-																		          }
-														    .step .num {
-															          width: 24px; height: 24px;
-																        border-radius: 8px;
-																	      display: inline-flex; align-items: center; justify-content: center;
-																	            font-weight: 700;
-																		          background: linear-gradient(135deg, var(--grad1), var(--grad2));
-																			        color: white;
-																				      box-shadow: 0 2px 6px rgba(0,0,0,.5);
-																				          }
-														        .step p { margin: 0; }
-
-															    .close {
-																          background: transparent; border: 0; color: #fff;
-																	        float: right; font-size: 1.1rem; cursor: pointer;
-																		      padding: 4px 8px;
-																		          }
-
-															        @media (max-width: 640px){
-																	      .logo { justify-content: center; }
-																	            .header { flex-direction: column; align-items: center; text-align: center; }
-																		          .step { grid-template-columns: 1fr; }
-																			        .step .num { margin: 0 auto; }
-																				    }
-																  </style>
-	</head>
-	<body>
-		  <div class="stage" aria-label="Kubernetes welcome stage">
-			      <div class="blob b1" aria-hidden="true"></div>
-			          <div class="blob b2" aria-hidden="true"></div>
-
-				      <div class="header">
-					            <div class="logo" role="img" aria-label="Kubernetes logo and title">
-							            <!-- Inline Kubernetes-like logo (stylized wheel) -->
-								            <svg class="k8s-svg" viewBox="0 0 200 200" aria-label="Kubernetes wheel logo" role="img">
-										              <defs>
-											                  <linearGradient id="grad" x1="0" x2="1" y1="0" y2="1">
-													                <stop offset="0%" stop-color="#4f8cff"/>
-															              <stop offset="60%" stop-color="#00e6d6"/>
-																                    <stop offset="100%" stop-color="#6affc7"/>
-																		                </linearGradient>
-																				          </defs>
-																					            <!-- outer ring -->
-																						              <circle cx="100" cy="100" r="78" fill="none" stroke="url(#grad)" stroke-width="14" />
-																							                <!-- spokes (8) -->
-																									          <line x1="100" y1="100" x2="100" y2="60" stroke="url(#grad)" stroke-width="10" stroke-linecap="round" transform="rotate(0 100 100)"/>
-																										            <line x1="100" y1="100" x2="100" y2="60" stroke="url(#grad)" stroke-width="10" stroke-linecap="round" transform="rotate(45 100 100)"/>
-																											              <line x1="100" y1="100" x2="100" y2="60" stroke="url(#grad)" stroke-width="10" stroke-linecap="round" transform="rotate(90 100 100)"/>
-																												                <line x1="100" y1="100" x2="100" y2="60" stroke="url(#grad)" stroke-width="10" stroke-linecap="round" transform="rotate(135 100 100)"/>
-																														          <line x1="100" y1="100" x2="100" y2="60" stroke="url(#grad)" stroke-width="10" stroke-linecap="round" transform="rotate(180 100 100)"/>
-																															            <line x1="100" y1="100" x2="100" y2="60" stroke="url(#grad)" stroke-width="10" stroke-linecap="round" transform="rotate(225 100 100)"/>
-																																              <line x1="100" y1="100" x2="100" y2="60" stroke="url(#grad)" stroke-width="10" stroke-linecap="round" transform="rotate(270 100 100)"/>
-																																	                <line x1="100" y1="100" x2="100" y2="60" stroke="url(#grad)" stroke-width="10" stroke-linecap="round" transform="rotate(315 100 100)"/>
-																																			          <!-- hub -->
-																																				            <circle cx="100" cy="100" r="16" fill="url(#grad)" />
-																																					            </svg>
-																																						          </div>
-																																							        <div style="text-align:left; max-width:560px;">
-																																									        <h1>Welcome to UAT Kubernetes</h1>
-																																										        <p class="subtitle">A colorful, interactive landing page to celebrate your local Kubernetes practice. No cloud required—just Docker and a playground mindset.</p>
-																																											      </div>
-																																											          </div>
-
-																																												      <div class="hero" aria-label="Quick introduction">
-																																													            <p style="margin:0; font-size:1rem; color:#e9f7ff; opacity:.95;">This page showcases a unique way to greet beginners and remind veterans that Kubernetes runs everywhere: on your laptop, in your terminal, and in your imagination.</p>
-																																														          <button class="cta" id="startBtn" aria-label="Open setup guide">Start the Local Playground</button>
-																																															      </div>
-
-																																															          <section class="grid" aria-label="Feature highlights">
-																																																	        <div class="card" style="border-left:6px solid #6be3ff;">
-																																																			        <h3>Local cluster, no cloud</h3>
-																																																				        <p>Practice with Kind or K3d on your Windows machine using Docker Desktop. Create multi-node simulations and learn scheduling fundamentals.</p>
-																																																					      </div>
-																																																					            <div class="card" style="border-left:6px solid #4f8cff;">
-																																																							            <h3>4 pods per node (demo)</h3>
-																																																								            <p>Pin workloads to specific nodes with nodeAffinity to observe distribution and scheduling behavior.</p>
-																																																									          </div>
-																																																										        <div class="card" style="border-left:6px solid #9b5cff;">
-																																																												        <h3>Interactive guidance</h3>
-																																																													        <p>Click the button to reveal a guided, step-by-step local setup and verification commands you can copy/paste.</p>
-																																																														      </div>
-																																																														          </section>
-
-																																																															    </div>
-
-																																																															      <div class="hint" role="note" aria-label="Hint">
-																																																																          Tip: Try removing the control-plane taint to run workloads on the master node (if you’re experimenting with 3-node workloads).
-																																																																	    </div>
-
-																																																																	      <!-- Modal for steps -->
-																																																																	        <div class="modal" id="modal" aria-hidden="true" aria-label="Setup steps modal">
-																																																																			    <div class="dialog" role="dialog" aria-label="Setup steps">
-																																																																				          <button class="close" id="closeBtn" aria-label="Close">✕</button>
-																																																																					        <h2>Local Kubernetes Playground — Quick Start</h2>
-																																																																						      <p style="margin-top:0; color:#d9f0ff;">
-																																																																						              Use Kind (Kubernetes IN Docker) to create a 3-node cluster on your Windows machine. Then deploy 3 small apps (4 pods per node) using nodeAffinity.
-																																																																							            </p>
-
-																																																																								          <div class="step">
-																																																																										          <div class="num">1</div>
-																																																																											          <div>
-																																																																													            <strong>Install Kind (Windows)</strong>
-																																																																														              <p>Download kind.exe and place it on your PATH. Example: C:\tools\kind.exe</p>
-																																																																															              </div>
-																																																																																            </div>
-
-																																																																																	          <div class="step">
-																																																																																			          <div class="num">2</div>
-																																																																																				          <div>
-																																																																																						            <strong>Cluster config</strong>
-																																																																																							         
-
+    <button class="cta3d">Start Your Local Playground</button>
+  </div>
+</body>
+</html>
