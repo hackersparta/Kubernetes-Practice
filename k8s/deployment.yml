@@ -12,8 +12,6 @@ spec:
       labels:
         app: apache-uat
     spec:
-      nodeSelector:
-        role: uat
       containers:
       - name: apache
         image: nirmal46789/alpine-kubepractice-app:uat-13
@@ -34,5 +32,6 @@ spec:
       port: 80
       targetPort: 80
       nodePort: 30001
+
 
 
