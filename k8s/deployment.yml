@@ -16,7 +16,7 @@ spec:
         role: production
       containers:
       - name: apache
-        image: nirmal46789/alpine-kubepractice-app:prod
+        image: nirmal46789/alpine-kubepractice-app:prod-1
         imagePullPolicy: Always
         ports:
         - containerPort: 80
