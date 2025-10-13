@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: apache
-        image: nirmal46789/alpine-kubepractice-app:qatest-2
+        image: nirmal46789/alpine-kubepractice-app:qatest-3
         imagePullPolicy: Always
         ports:
         - containerPort: 80
