@@ -13,7 +13,7 @@ spec:
         app: apache-production
     spec:
       nodeSelector:
-        role: production
+        role: prod
       containers:
       - name: apache
         image: nirmal46789/alpine-kubepractice-app:prod-3
@@ -34,3 +34,4 @@ spec:
       port: 80
       targetPort: 80
       nodePort: 30003
+
