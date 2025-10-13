@@ -1,0 +1,37 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apache-qatest
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: apache-qatest
+  template:
+    metadata:
+      labels:
+        app: apache-qatest
+    spec:
+      nodeSelector:
+        role: qatest
+      containers:
+      - name: apache
+        image: nirmal46789/alpine-kubepractice-app:qatest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: apache-qatest-svc
+spec:
+  selector:
+    app: apache-qatest
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 30002
