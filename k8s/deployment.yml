@@ -16,7 +16,7 @@ spec:
         role: uat
       containers:
       - name: apache
-        image: nirmal46789/alpine-kubepractice-app:uat-11
+        image: nirmal46789/alpine-kubepractice-app:uat-12
         imagePullPolicy: Always
         ports:
         - containerPort: 80
