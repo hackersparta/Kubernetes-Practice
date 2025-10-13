@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: apache-production
 spec:
-  replicas: 2
+  replicas: 5
   selector:
     matchLabels:
       app: apache-production
@@ -12,11 +12,9 @@ spec:
       labels:
         app: apache-production
     spec:
-      nodeSelector:
-        role: production
       containers:
       - name: apache
-        image: nirmal46789/alpine-kubepractice-app:prod-1
+        image: nirmal46789/alpine-kubepractice-app:prod-6
         imagePullPolicy: Always
         ports:
         - containerPort: 80
@@ -34,3 +32,8 @@ spec:
       port: 80
       targetPort: 80
       nodePort: 30003
+
+
+
+
+
