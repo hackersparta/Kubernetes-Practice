@@ -6,7 +6,7 @@ kind: Deployment
 metadata:
   name: apache-uat
 spec:
-  replicas: 3
+  replicas: 4
   selector:
     matchLabels:
       app: apache-uat
@@ -37,3 +37,4 @@ spec:
       port: 80          # inside cluster
       targetPort: 80    # container port
       nodePort: 30001   # host port
+
