@@ -19,7 +19,7 @@ spec:
         role: uat
       containers:
       - name: apache
-        image: nirmal46789/alpine-kubepractice-app:uat
+        image: nirmal46789/alpine-kubepractice-app:uat-0   # <-- Replace `uat` with dummy initial tag
         imagePullPolicy: Always
         ports:
         - containerPort: 80
@@ -34,7 +34,6 @@ spec:
   type: NodePort
   ports:
     - protocol: TCP
-      port: 80          # inside cluster
-      targetPort: 80    # container port
-      nodePort: 30001   # host port
-
+      port: 80
+      targetPort: 80
+      nodePort: 30001
