@@ -13,8 +13,6 @@ spec:
       labels:
         app: apache-qatest
     spec:
-      nodeSelector:
-        role: qatest
       containers:
       - name: apache
         image: nirmal46789/alpine-kubepractice-app:qatest-2
@@ -35,4 +33,5 @@ spec:
       port: 80
       targetPort: 80
       nodePort: 30002
+
 
